@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('clone') {
+            steps {
+                git 'https://github.com/harishgit1810/pro11.git'
+            }
+        }
+        stage('docker login') {
+            steps {
+                bat 'docker login -u harishcloud -p Hari@9089'
+            }
+        }
+        stage('docker pull') {
+            steps {
+                bat '''
+                docker pull jenkins/jenkins
+                docker run -d --name cntrp1 -p 8055:80 jenkins/jenkins
+                docker build -t img3 .
+                docker run -d --name testcont1 -p 8056:80 img3
+                '''
+            }
+        }
+    }
+}
